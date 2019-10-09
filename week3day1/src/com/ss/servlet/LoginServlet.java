@@ -42,25 +42,7 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	
 		
-         
-        Gson gson = new Gson();
-		
-		System.out.println("Login headers: " +  request.getHeaderNames());
-		
-        String rawBody = "";
-        String s;
-        while ((s = request.getReader().readLine()) != null) {
-            rawBody += s;
-        }
-        
-        System.out.println("raw: " + rawBody);
-
-        User reqUser = (User) gson.fromJson(rawBody, User.class);
-        
-        
 		List<User> users = new ArrayList<User>();
 		
 		users.add(new User("joe", "joepass"));
@@ -68,6 +50,12 @@ public class LoginServlet extends HttpServlet {
 		users.add(new User("al", "alpass"));
 		users.add(new User("dan", "danpass"));
 		
+		
+        Gson gson = new Gson();
+        
+        User reqUser = (User) gson.fromJson(request.getReader(), User.class);
+        
+   	
 		Optional<User> found = users.stream()
 				.filter(user -> (user.getUsername().equals(reqUser.getUsername())) &&
 						(user.getPassword().equals(reqUser.getPassword()))) 
@@ -84,5 +72,4 @@ public class LoginServlet extends HttpServlet {
 		out.print("success");
 		out.flush();
 	}
-
 }
